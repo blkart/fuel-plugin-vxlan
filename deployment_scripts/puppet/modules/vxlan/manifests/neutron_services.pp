@@ -40,8 +40,8 @@ class vxlan::neutron_services (){
 
     neutron_plugin_ml2 { 
         'agent/tunnel_types': value => 'vxlan,gre';
-    }~> Service['neutron-plugin-openvswitch-agent']
-    service { 'neutron-plugin-openvswitch-agent':
+    }~> Service['neutron-openvswitch-agent']
+    service { 'neutron-openvswitch-agent':
       ensure  => running,
       enable  => true,
     }
@@ -55,8 +55,8 @@ class vxlan::neutron_services (){
     neutron_plugin_ml2 {
         'agent/tunnel_types': value => 'vxlan';
     }->
-    exec { "neutron-pluign-openvswitch-agent_restart":
-      command => "/usr/sbin/crm resource restart p_neutron-plugin-openvswitch-agent",
+    exec { "neutron-openvswitch-agent_restart":
+      command => "/usr/sbin/crm resource restart p_neutron-openvswitch-agent",
     }->
     exec { "neutron-l3-agent_restart":
       command => "/usr/sbin/crm resource restart p_neutron-l3-agent",
