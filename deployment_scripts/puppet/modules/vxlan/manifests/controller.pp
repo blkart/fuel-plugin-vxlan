@@ -43,7 +43,7 @@ include vxlan::params
 
   #update  ml2 configuration
   neutron_plugin_ml2 {
-      'ml2/type_drivers': value => 'vxlan,flat,vlan,gre';
+      'ml2/type_drivers': value => 'vxlan,flat,vlan,gre,local';
       'ml2/tenant_network_types': value => 'vxlan,flat,vlan,gre';
       'ovs/tunnel_type': value => 'vxlan,gre';
   }~> Service['neutron-server']
