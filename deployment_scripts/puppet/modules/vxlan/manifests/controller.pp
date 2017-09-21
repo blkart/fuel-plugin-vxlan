@@ -45,7 +45,7 @@ include vxlan::params
   neutron_plugin_ml2 {
       'ml2/type_drivers': value => 'vxlan,flat,vlan,gre,local';
       'ml2/tenant_network_types': value => 'vxlan,flat,vlan,gre';
-      'ovs/tunnel_type': value => 'vxlan,gre';
+      'ovs/tunnel_types': value => 'vxlan,gre';
   }~> Service['neutron-server']
 
   file { 'dnsmasq-neutron.conf':

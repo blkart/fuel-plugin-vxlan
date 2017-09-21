@@ -53,7 +53,7 @@ class vxlan::neutron_services (){
   else {
 
     neutron_plugin_ml2 {
-        'agent/tunnel_types': value => 'vxlan';
+        'agent/tunnel_types': value => 'vxlan,gre';
     }->
     exec { "neutron-openvswitch-agent_restart":
       command => "/usr/sbin/crm resource restart p_neutron-openvswitch-agent",
