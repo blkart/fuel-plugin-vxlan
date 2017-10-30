@@ -53,7 +53,7 @@ include vxlan::params
 
 
   neutron_plugin_ml2 {
-      'ovs/tunnel_type': value => 'vxlan,gre';
+      'ovs/tunnel_types': value => 'vxlan,gre';
   }
 
   neutron_plugin_ml2 { 

@@ -43,11 +43,37 @@ include vxlan::params
 
   #update  ml2 configuration
   neutron_plugin_ml2 {
-      'ml2/type_drivers': value => 'vxlan,flat,vlan,gre';
+      'ml2/type_drivers': value => 'vxlan,flat,vlan,gre,local';
       'ml2/tenant_network_types': value => 'vxlan,flat,vlan,gre';
-      'ovs/tunnel_type': value => 'vxlan,gre';
+      'ovs/tunnel_types': value => 'vxlan,gre';
   }~> Service['neutron-server']
 
+  file { 'dnsmasq-neutron.conf':
+    ensure  => file,
+    path    => '/etc/neutron/dnsmasq-neutron.conf',
+    source  => 'puppet:///modules/vxlan/dnsmasq-neutron.conf',
+    group   => 'root',
+  }
+
+  neutron_dhcp_agent_config {
+      'DEFAULT/dnsmasq_config_file': value => '/etc/neutron/dnsmasq-neutron.conf';
+  }~> Service['neutron-dhcp-agent']
+
+  if $fuel_settings['deployment_mode'] == 'ha_compact' {
+    service { 'neutron-dhcp-agent':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => false,
+      provider   => 'pacemaker',
+    }
+  }
+  else {
+    service { 'neutron-dhcp-agent':
+      ensure => running,
+      enable => true,
+    }
+  }
   
   class{'vxlan::neutron_services':}
   
